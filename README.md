@@ -101,7 +101,8 @@ config：存放本地仓库（local）相关的配置信息。
 refs/heads: 存放分支
 refs/heads/master/: 指向master分支最后一次commit
 refs/tags: 存放tag，又叫里程牌 （当这次commit是具有里程碑意义的 比如项目1.0的时候 就可以打tag）
-objects：存放对象
+objects：核心文件，存储文件
 ```
-.git/objects/ 文件夹中的子文件夹都是以哈希值的前两位字符命名,每个object由40位字符组成，前两位字符用来当文件夹，后38位做文件。    
+.git/objects/ 存放所有的 git 对象，对象哈希值前 2 位作为文件夹名称，后 38 位作为对象文件名, 可通过 git cat-file -p 命令，拼接文件夹名称+文件名查看。    
 
+## commit、tree和blob三个对象之间的关系
