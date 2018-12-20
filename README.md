@@ -27,8 +27,9 @@ git add -u :将工作空间被修改和被删除的文件添加到暂存区(不�
 ## 创建仓库
 ```bash
 git init [project folder name]  初始化 git 仓库
-git add fileName  把文件从工作目录添加到暂存区
-git commit -m'some information'  添加文件到版本历史库
+git add [fileName]  把文件从工作目录添加到暂存区
+git commit -m'some information'  用于提交暂存区的文件
+git commit -am'Some information' 用于提交跟踪过的文件
 git log  查看历史
 git status  查看状态
 ```
@@ -118,5 +119,44 @@ blob: 文件
 **【老师解答】** Git对于内容相同的文件只会存一个blob，不同的commit的区别是commit、tree和有差异的blob，多数未变更的文件对应的blob都是相同的，这么设计对于版本管理系统来说可以省很多存储空间。其次，Git还有增量存储的机制，我估计是对于差异很小的blob设计的吧。    
 
 
-## 分离头指针情况下的注意事项
+## `分离头指针`情况下的注意事项
+
+detached HEAD   
+
+## 进一步理解`HEAD`和`branch`
+```bash
+git checkout -b new_branch [具体分支 或 commit] 创建新分支并切换到新分支
+git diff HEAD HEAD~1 比较最近两次提交
+git diff HEAD HEAD~2 比较最近和倒数第三次提交
+git diff HEAD HEAD^  比较最近两次提交
+git diff HEAD HEAD^^ 比较最近和倒数第三次提交
+```   
+
+## 怎么删除不需要的分支？
+查看分支：   
+```bash
+git branch -av
+```
+删除分支命令：    
+```bash
+git branch -d [branch name]  删除
+git branch -D [branch name]  强制删除
+```
+
+## 怎么修改最新commit的message？
+```bash
+git commit --amend  对最近一次的commit信息进行修改
+```
+
+## 怎么修改老旧commit的message？
+```bash
+git rebase -i [要更改的commit的上一级commit]
+```
+接下来就是一个交互过程...    
+这期间会产生一个detached HEAD，然后将改好的commit指向该detached HEAD，如下图所示：    
+![rebase](./images/img2.jpg)    
+
+**git rebase工作的过程中，就是用了分离头指针。rebase意味着基于新base的commit来变更部分commits。它处理的时候，把HEAD指向base的commit，此时如果该commit没有对应branch，就处于分离头指针的状态，然后重新一个一个生成新的commit，当rebase创建完最后一个commit后，结束分离头状态，Git让变完基的分支名指向HEAD。**    
+
+## 怎样把连续的多个commit整理成1个？
 
