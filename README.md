@@ -239,3 +239,106 @@ update
 
 ```
 
+## 怎么比较暂存区和HEAD所含文件的差异？
+```bash
+git diff --cached
+```
+或者
+```bash
+git diff --staged
+```
+
+## 怎么比较工作区和暂存区所含文件的差异？
+```bash
+git diff
+```
+```bash
+git diff -- [filename/pathname] #比较具体的文件或者路径
+```
+
+## 如何让暂存区恢复成和HEAD的一样？
+```bash
+git reset HEAD
+```
+```bash
+git reset 有三个参数
+--soft 这个只是把 HEAD 指向的 commit 恢复到你指定的 commit，暂存区 工作区不变
+--hard 这个是 把 HEAD， 暂存区， 工作区 都修改为 你指定的 commit 的时候的文件状态
+--mixed 这个是不加时候的默认参数，把 HEAD，暂存区 修改为 你指定的 commit 的时候的文件状态，工作区保持不变
+```
+
+##  如何让工作区的文件恢复为和暂存区一样？
+```bash
+git checkout -- <file>...
+```
+**恢复工作区用checkout，恢复暂存区用reset。**   
+
+## 怎样取消暂存区部分文件的更改？
+```bash
+git reset HEAD -- <file>...
+```
+
+## 看看不同提交的指定文件的差异
+```bash
+git diff commit-id1 commit-id2 -- <file>...
+```
+
+## 正确删除文件的方法
+```bash
+git rm <file>
+```
+
+## 开发中临时加塞了紧急任务怎么处理？
+```bash
+git stash list #查看stash中存放的信息
+git stash #将当前工作区内容存放到"堆栈"中
+```
+```bash
+git stash apply #把"堆栈"里面的内容弹出到工作区中，同时"堆栈"中信息还在
+```
+```bash
+git stash pop #把"堆栈"里面的内容弹出到工作区中，同时丢弃"堆栈"中最新的信息
+```
+
+## 如何指定不需要Git管理的文件？
+```bash
+.gitignore
+```
+**【同学提问】** 如果提交commit后，想再忽略一些已经提交的文件，怎么处理。    
+**【老师回答】** The problem is that .gitignore ignores just files that weren't tracked before (by git add). Run git reset name_of_file to unstage the file and keep it. In case you want to also remove given file from the repository (after pushing), use git rm --cached name_of_file.    
+把想忽略的文件添加到 .gitignore ；然后通过 git rm -- cached name_of_file 的方式删除掉git仓库里面无需跟踪的文件。    
+
+##  添加远程仓库
+```bash
+git remote add [shortname] [url]
+```
+
+## 配置公私钥
+1、 检查是否已存在相应的`ssh key`:    
+打开终端, 输入:   
+```bash
+ls -al ~/.ssh
+```
+核对列出来的ssh key是否有已存在的，假如你没有看到列出的公私钥对，或是不想再用之前的公私钥对，你可以选择下面的步骤生成新的公私钥对.    
+
+2、生成新的`ssh key`,并添加至`ssh-agent`:    
+打开终端, 使用`ssh key`生成命令：
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+**注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为xxxx@qq.com，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxxx@qq.com`。    
+
+3、接下来会提示你保存的`ssh key`的名称以及路径。默认路径是(`/Users/you/.ssh/id_rsa`) (`you`为用户个人目录)。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：
+```bash
+/Users/andy/.ssh/github_rsa 
+```
+
+4、接下来会提示设置ssh安全密码。这一步可以使用默认的（即不设置密码），直接按回车即可。倘若想了解更多关于ssh key密码设置的细节，可访问： “Working with SSH key passphrases” 。    
+
+5、 `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：`ssh-add ~/.ssh/xxx_rsa,xxx_rsa`是你生成的`ssh key`的私钥名。    
+
+6、连接测试    
+接下来我们测试是否配置成功，打开终端，输入:    
+```bash
+ssh -T git@github.com
+```
