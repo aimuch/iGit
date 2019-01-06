@@ -344,7 +344,11 @@ ssh -T git@github.com
 ```
 
 ## 怎么快速淘到感兴趣的开源项目？
-[高级搜索](https://github.com/search/advanced)：   
+**UI界面高级搜索**： https://github.com/search/advanced)   
+
+**命令高级搜索**：   
 ```bash
-git 最好 学习 资料 in:readme
+git 最好 学习 资料 in:readme stars:>1000 language:c
 ```
+上述命令的意思是搜索reademe中包含`git、最好、学习、资料`”且`star大于1000`的，用`C语言编写`的仓库。    
+
