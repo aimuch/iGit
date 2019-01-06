@@ -342,3 +342,9 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```bash
 ssh -T git@github.com
 ```
+
+## 怎么快速淘到感兴趣的开源项目？
+[高级搜索](https://github.com/search/advanced)：   
+```bash
+git 最好 学习 资料 in:readme
+```
