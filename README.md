@@ -344,7 +344,8 @@ ssh -T git@github.com
 ```
 
 ## 怎么快速淘到感兴趣的开源项目？
-**UI界面高级搜索**： https://github.com/search/advanced)   
+
+**UI界面高级搜索**： https://github.com/search/advanced     
 
 **命令高级搜索**：   
 ```bash
