@@ -3,6 +3,7 @@
 - [添加配置](#添加配置)  
 - [创建仓库](#创建仓库)   
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
+- [Tag](#tag)
 
 
 ---
@@ -48,6 +49,31 @@ git add -u 可以添加所有已经被 git 控制的文件到暂存区
 git  mv  [old file name]  [new file name]
 git commit -m 'some information'
 ```
+## Tag
+**显示已有标签**   
+```shell
+git tag
+```
+**新建标签**   
+*创建一个含附注类型的标签非常简单，用 -a （译注：取 annotated 的首字母）指定标签名字即可*
+```shell
+git tag -a tag_name -m 'Some Messages'
+```
+**删除标签**   
+删除本地标签:    
+```shell
+git tag -d tag_name
+```
+删除`remote`标签    :
+```shell
+git push --delete origin tag_name
+```
+**推送标签到github**
+将本地**所有**标签推送到`remote`:    
+```shell
+git push origin --tags
+```
+
 
 ## 通过`git log`查看版本演变历史
 ```bash
