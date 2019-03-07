@@ -3,7 +3,8 @@
 - [添加配置](#添加配置)  
 - [创建仓库](#创建仓库)   
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
-- [Tag](#tag)
+- [Tag标签](#tag标签)
+- [git修改gitignore后生效](#git修改gitignore后生效)
 
 
 ---
@@ -49,7 +50,7 @@ git add -u 可以添加所有已经被 git 控制的文件到暂存区
 git  mv  [old file name]  [new file name]
 git commit -m 'some information'
 ```
-## Tag
+## Tag标签
 **显示已有标签**   
 ```shell
 git tag
@@ -269,7 +270,7 @@ update
 update
 
 ```
-## git 修改.gitignore后生效
+## git修改gitignore后生效
 ```bash
 git rm -r --cached .    #清除缓存
 git add .               #重新trace file
