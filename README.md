@@ -177,8 +177,8 @@ git branch -av
 ```
 删除分支命令：    
 ```bash
-git branch -d [branch name]  删除
-git branch -D [branch name]  强制删除
+git branch -d [branch name]  #删除
+git branch -D [branch name]  #强制删除
 ```
 
 ## 怎么修改最新commit的message
@@ -381,7 +381,11 @@ git remote add [shortname] [url]
 
 4. 接下来会提示设置ssh安全密码。这一步可以使用默认的（即不设置密码），直接按回车即可。倘若想了解更多关于ssh key密码设置的细节，可访问： “Working with SSH key passphrases” 。    
 
-5. `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：`ssh-add ~/.ssh/xxx_rsa`, `xxx_rsa`是你生成的`ssh key`的私钥名。    
+5. `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：
+    ```shell
+    ssh-add ~/.ssh/github_rsa
+    ```
+    `xxx_rsa`是你生成的`ssh key`的私钥名。    
 
 6. 连接测试    
     接下来我们测试是否配置成功，打开终端，输入:    
