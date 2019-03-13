@@ -360,38 +360,48 @@ git remote add [shortname] [url]
 ```
 
 ## 配置公私钥
-1. 检查是否已存在相应的`ssh key`:    
-    打开终端, 输入:   
-    ```bash
-    ls -al ~/.ssh
-    ```
-    核对列出来的ssh key是否有已存在的，假如你没有看到列出的公私钥对，或是不想再用之前的公私钥对，你可以选择下面的步骤生成新的公私钥对.    
+### 1、 检查是否已存在相应的`ssh key`:    
+打开终端, 输入:   
+```shell
+ls -al ~/.ssh
+```
+核对列出来的ssh key是否有已存在的，假如你没有看到列出的公私钥对，或是不想再用之前的公私钥对，你可以选择下面的步骤生成新的公私钥对.    
 
-2. 生成新的`ssh key`,并添加至`ssh-agent`:    
-    打开终端, 使用`ssh key`生成命令：
-    ```bash
-    ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-    ```
-    **注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为`xxx@gmail.com`，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。    
+### 2、 生成新的`ssh key`,并添加至`ssh-agent`:    
+#### 2.1 打开终端, 使用`ssh key`生成命令：
+```shell
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+**注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为`xxx@gmail.com`，则命令行为：    
+```shell
+ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。    
+```   
 
-3. 接下来会提示你保存的`ssh key`的名称以及路径。默认路径是`/home/you/.ssh/id_rsa`(`you`为用户个人目录)即`~/.ssh/id_rsa`。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：
-    ```shell
-    /home/andy/.ssh/github_rsa 
-    ```
+#### 2.2 接下来会提示你保存的`ssh key`的名称以及路径。    
+默认路径是`/home/you/.ssh/id_rsa`(`you`为用户个人目录)即`~/.ssh/id_rsa`。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：    
+```shell
+/home/andy/.ssh/github_rsa 
+```
 
-4. 接下来会提示设置ssh安全密码。这一步可以使用默认的（即不设置密码），直接按回车即可。倘若想了解更多关于ssh key密码设置的细节，可访问： “Working with SSH key passphrases” 。    
+#### 2.3 接下来会提示设置ssh安全密码。    
+这一步可以使用默认的（即不设置密码），直接按回车即可。    
+这里会生成`xxx_rsa`和`xxx_rsa.pub`两个文件,`xxx_rsa`是生成的`ssh key`的私钥名，`xxx_rsa.pub`是生成的`ssh key`的公钥名，私钥要放在本地，公钥要放在服务器或github的Settings->SSHand GPG keys->New SSH key上。    
+![git key](images/git-key.png)     
 
-5. `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：
-    ```shell
-    ssh-add ~/.ssh/github_rsa
-    ```
-    `xxx_rsa`是你生成的`ssh key`的私钥名。    
+#### 2.4 `ssh key`生成后，接下来需要为`ssh key`添加代理。   
+这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令:**`ssh-add ~/.ssh/xxx_rsa`**， `xxx_rsa`是你生成的`ssh key`的私钥名，我的设置为:    
+```shell
+ssh-add ~/.ssh/github_rsa
+```
 
-6. 连接测试    
-    接下来我们测试是否配置成功，打开终端，输入:    
-    ```bash
-    ssh -T git@github.com
-    ```
+### 3、 将生成的`xxx_rsa.pub`公钥内容添加到GitHub的SSH keys页面上。    
+![github ssh](images/github-ssh.png)    
+### 4、 连接测试    
+接下来我们测试是否配置成功，打开终端，输入:    
+```bash
+ssh -T git@github.com
+```
+![git test](images/git-test.png)    
 
 ## 怎么快速淘到感兴趣的开源项目
 
