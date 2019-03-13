@@ -4,7 +4,13 @@
 - [创建仓库](#创建仓库)   
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
 - [Tag标签](#tag标签)
+- [通过`git log`查看版本演变历史](#通过git-log查看版本演变历史)
+- [探密`.git`目录](#探密`.git`目录)
+- [怎么修改老旧commit的message](#怎么修改老旧commit的message)
+- [怎样把连续的多个commit整理成1个](#怎样把连续的多个commit整理成1个)
 - [git修改gitignore后生效](#git修改gitignore后生效)
+- [配置公私钥](#配置公私钥)
+- [怎么快速淘到感兴趣的开源项目](#怎么快速淘到感兴趣的开源项目)
 
 
 ---
@@ -76,7 +82,7 @@ git push origin --tags
 ```
 
 
-## 通过`git log`查看版本演变历史
+## 通过git log查看版本演变历史
 ```bash
 git log --all 查看所有分支的历史
 git log --all --graph 查看图形化的 log 地址
@@ -151,7 +157,7 @@ blob: 文件
 **【老师解答】** Git对于内容相同的文件只会存一个blob，不同的commit的区别是commit、tree和有差异的blob，多数未变更的文件对应的blob都是相同的，这么设计对于版本管理系统来说可以省很多存储空间。其次，Git还有增量存储的机制，我估计是对于差异很小的blob设计的吧。    
 
 
-## `分离头指针`情况下的注意事项
+## 分离头指针情况下的注意事项
 
 detached HEAD   
 
@@ -175,12 +181,12 @@ git branch -d [branch name]  删除
 git branch -D [branch name]  强制删除
 ```
 
-## 怎么修改最新commit的message？
+## 怎么修改最新commit的message
 ```bash
 git commit --amend  对最近一次的commit信息进行修改
 ```
 
-## 怎么修改老旧commit的message？
+## 怎么修改老旧commit的message
 ```bash
 git rebase -i [要更改的commit的上一级commit]
 ```
@@ -190,7 +196,7 @@ git rebase -i [要更改的commit的上一级commit]
 
 **git rebase工作的过程中，就是用了分离头指针。rebase意味着基于新base的commit来变更部分commits。它处理的时候，把HEAD指向base的commit，此时如果该commit没有对应branch，就处于分离头指针的状态，然后重新一个一个生成新的commit，当rebase创建完最后一个commit后，结束分离头状态，Git让变完基的分支名指向HEAD。**    
 
-## 怎样把连续的多个commit整理成1个？
+## 怎样把连续的多个commit整理成1个
 ```bash
 git rebase -i [要更改的commit的上一级commit]
 ```
@@ -354,36 +360,36 @@ git remote add [shortname] [url]
 ```
 
 ## 配置公私钥
-1、 检查是否已存在相应的`ssh key`:    
-打开终端, 输入:   
-```bash
-ls -al ~/.ssh
-```
-核对列出来的ssh key是否有已存在的，假如你没有看到列出的公私钥对，或是不想再用之前的公私钥对，你可以选择下面的步骤生成新的公私钥对.    
+1. 检查是否已存在相应的`ssh key`:    
+    打开终端, 输入:   
+    ```bash
+    ls -al ~/.ssh
+    ```
+    核对列出来的ssh key是否有已存在的，假如你没有看到列出的公私钥对，或是不想再用之前的公私钥对，你可以选择下面的步骤生成新的公私钥对.    
 
-2、生成新的`ssh key`,并添加至`ssh-agent`:    
-打开终端, 使用`ssh key`生成命令：
-```bash
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-```
-**注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为`xxx@gmail.com`，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。    
+2. 生成新的`ssh key`,并添加至`ssh-agent`:    
+    打开终端, 使用`ssh key`生成命令：
+    ```bash
+    ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+    ```
+    **注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为`xxx@gmail.com`，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。    
 
-3、接下来会提示你保存的`ssh key`的名称以及路径。默认路径是(`/Users/you/.ssh/id_rsa`) (`you`为用户个人目录)。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：
-```bash
-/Users/andy/.ssh/github_rsa 
-```
+3. 接下来会提示你保存的`ssh key`的名称以及路径。默认路径是`/home/you/.ssh/id_rsa`(`you`为用户个人目录)即`~/.ssh/id_rsa`。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：
+    ```shell
+    /home/andy/.ssh/github_rsa 
+    ```
 
-4、接下来会提示设置ssh安全密码。这一步可以使用默认的（即不设置密码），直接按回车即可。倘若想了解更多关于ssh key密码设置的细节，可访问： “Working with SSH key passphrases” 。    
+4. 接下来会提示设置ssh安全密码。这一步可以使用默认的（即不设置密码），直接按回车即可。倘若想了解更多关于ssh key密码设置的细节，可访问： “Working with SSH key passphrases” 。    
 
-5、 `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：`ssh-add ~/.ssh/xxx_rsa,xxx_rsa`是你生成的`ssh key`的私钥名。    
+5. `ssh key`生成后，接下来需要为`ssh key`添加代理，这是为了让请求自动对应相应的账号。网上很多文章写到需要另外配置`config`文件，经本人亲测，其实是不需要的，在生成了`ssh key`后，通过为生成的`ssh key`添加代理即可，为`ssh key`添加代理命令：`ssh-add ~/.ssh/xxx_rsa`, `xxx_rsa`是你生成的`ssh key`的私钥名。    
 
-6、连接测试    
-接下来我们测试是否配置成功，打开终端，输入:    
-```bash
-ssh -T git@github.com
-```
+6. 连接测试    
+    接下来我们测试是否配置成功，打开终端，输入:    
+    ```bash
+    ssh -T git@github.com
+    ```
 
-## 怎么快速淘到感兴趣的开源项目？
+## 怎么快速淘到感兴趣的开源项目
 
 **UI界面高级搜索**： https://github.com/search/advanced     
 
