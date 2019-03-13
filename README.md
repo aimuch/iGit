@@ -366,7 +366,7 @@ ls -al ~/.ssh
 ```bash
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
-**注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为xxxx@qq.com，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxxx@qq.com`。    
+**注意** ：后面的邮箱对应相应账号的邮箱，假如是github的账号，且注册账号的邮箱为`xxx@gmail.com`，则命令行为：`ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。    
 
 3、接下来会提示你保存的`ssh key`的名称以及路径。默认路径是(`/Users/you/.ssh/id_rsa`) (`you`为用户个人目录)。这一步很重要，如果你使用默认的，且下一个账号也是使用默认的路径和文件名，那么之前的`ssh key`就会被后来生成的`ssh key`重写，从而导致之前的账号不可用。因此，正确的做法是给它命名，最后以应用名进行命名，因为更容易区分。以下是我个人配的：
 ```bash
