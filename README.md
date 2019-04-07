@@ -393,6 +393,13 @@ ssh-keygen -t rsa -b 4096 -C "xxx@gmail.com"`。
 ```shell
 ssh-add ~/.ssh/github_rsa
 ```
+这里有可能会提示以下错误:    
+![ssh-add key error](images/git-sshkey-error.png)     
+解决方法:    
+*需要ssh-agent启动bash，或者说把bash挂到ssh-agent下面*    
+```shell
+ssh-agent bash --login -i
+```
 
 ### 3、 将生成的`xxx_rsa.pub`公钥内容添加到GitHub的SSH keys页面上。    
 ![github ssh](images/github-ssh.png)    
