@@ -551,4 +551,5 @@ git 最好 学习 资料 in:readme stars:>1000 language:c
 
 ---
 ## 参考资料
-> 1. [寻找并删除Git记录中的大文件](https://harttle.land/2016/03/22/purge-large-files-in-gitrepo.html)
+> 1. [git-cheat-sheet](https://github.com/arslanbilal/git-cheat-sheet)
+> 2. [寻找并删除Git记录中的大文件](https://harttle.land/2016/03/22/purge-large-files-in-gitrepo.html) 
