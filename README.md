@@ -5,6 +5,7 @@
 - [clone时指定文件夹名字](#clone时指定文件夹名字)
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
 - [Tag标签](#tag标签)
+- [在Github上面创建Release](#在github上面创建Release)
 - [通过`git log`查看版本演变历史](#通过git-log查看版本演变历史)
 - [探密`.git`目录](#探密`.git`目录)
 - [怎么修改老旧commit的message](#怎么修改老旧commit的message)
@@ -89,6 +90,19 @@ git push --delete origin tag_name
 git push origin --tags
 ```
 
+## 在Github上面创建Release
+1. 在当前`repository`下点击 **release** 标签:
+    ![github release](images/github-release1.png)    
+
+2. 点击 **Draft a new release** 按钮:
+    ![github release](images/github-release2.png)    
+
+3. 在跳转后的界面下填写 `Tag version` 、 `Release title` 和 `描述`
+    ![github release](images/github-release3.png)    
+    如下图:   
+    ![github release](images/github-release4.png)    
+4. 点击 `Update release`按钮提交即可，提交后效果:
+    ![github release](images/github-release5.png)    
 
 ## 通过git log查看版本演变历史
 ```bash
