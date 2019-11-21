@@ -303,7 +303,7 @@ update
 ## 添加忽略配置文件gitignore
 在git中如果想忽略掉某个文件， 不让这个文件提交到版本库中，可以使用修改 .gitignore 文件的方法。    
 这个文件每一行保存了一个匹配的规则, 可以用正则表达式来描述, 例如:    
-```git
+```bash
 # 此为注释 – 将被 Git 忽略
 *.a       # 忽略所有 .a 结尾的文件
 !lib.a    # 但 lib.a 除外
@@ -314,7 +314,7 @@ doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
 *ignore*/ # 忽略名称中间包含ignore的文件夹
 ```
 通用的模板:   
-```git
+```bash
 # Compiled source #
 ###################
 *.com
