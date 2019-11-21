@@ -1,6 +1,6 @@
 # i Play Git
 *这是极客时间苏玲老师的《玩转Git三剑客》笔记*       
-- [添加配置](#添加配置)
+- [配置git环境](#配置git环境)
 - [创建仓库](#创建仓库)
 - [`clone`时指定文件夹名字](#clone时指定文件夹名字)
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
@@ -18,13 +18,14 @@
 
 
 ---
-## 添加配置
+## 配置git环境
+### 添加配置
 ```bash
 git config [--local | --global | --system] user.name 'Your name'
 git config [--local | --global | --system] user.email 'Your email'
 ```
 
-## 查看配置
+### 查看配置
 ```bash
 git config --list [--local | --global | --system]
 ```
@@ -34,7 +35,7 @@ local：区域为本仓库
 global: 当前用户的所有仓库
 system: 本系统的所有用户
 ```
-## `git add .` 和 `git add -u`区别
+### `git add .` 和 `git add -u`区别
 
 ```bash
 git add . ：将工作空间新增和被修改的文件添加的暂存区
