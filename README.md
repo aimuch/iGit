@@ -2,14 +2,15 @@
 *这是极客时间苏玲老师的《玩转Git三剑客》笔记*       
 - [添加配置](#添加配置)
 - [创建仓库](#创建仓库)
-- [clone时指定文件夹名字](#clone时指定文件夹名字)
+- [`clone`时指定文件夹名字](#clone时指定文件夹名字)
 - [给文件重命名的简便方法](#给文件重命名的简便方法)
-- [Tag标签](#tag标签)
-- [在Github上面创建Release](#在github上面创建Release)
+- [`Tag`标签](#tag标签)
+- [在Github上面创建`Release`](#在github上面创建Release)
 - [通过`git log`查看版本演变历史](#通过git-log查看版本演变历史)
 - [探密`.git`目录](#探密`.git`目录)
-- [怎么修改老旧commit的message](#怎么修改老旧commit的message)
-- [怎样把连续的多个commit整理成1个](#怎样把连续的多个commit整理成1个)
+- [怎么修改老旧`commit`的`message`](#怎么修改老旧commit的message)
+- [怎样把连续的多个`commit`整理成1个](#怎样把连续的多个commit整理成1个)
+- [添加忽略配置文件`.gitignore`](#添加忽略配置文件gitignore)
 - [Git修改 `.gitignore` 后生效](#git修改gitignore后生效)
 - [寻找并删除Git记录中的大文件](#寻找并删除git记录中的大文件)
 - [配置公私钥](#配置公私钥)
@@ -298,6 +299,63 @@ update
 update
 
 ```
+
+## 添加忽略配置文件gitignore
+在git中如果想忽略掉某个文件， 不让这个文件提交到版本库中，可以使用修改 .gitignore 文件的方法。    
+这个文件每一行保存了一个匹配的规则, 可以用正则表达式来描述, 例如:    
+```git
+# 此为注释 – 将被 Git 忽略
+*.a       # 忽略所有 .a 结尾的文件
+!lib.a    # 但 lib.a 除外
+/TODO     # 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
+build/    # 忽略 build/ 目录下的所有文件
+doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+*ignore/  # 忽略名称中末尾为ignore的文件夹
+*ignore*/ # 忽略名称中间包含ignore的文件夹
+```
+通用的模板:   
+```git
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+```
+
+更详细的介绍请看 **GitHub** 官网给出的例子: `https://github.com/github/gitignore`
 ## Git修改gitignore后生效
 ```bash
 git rm -r --cached .    #清除缓存
@@ -567,3 +625,4 @@ git 最好 学习 资料 in:readme stars:>1000 language:c
 ## 参考资料
 > 1. [git-cheat-sheet](https://github.com/arslanbilal/git-cheat-sheet)
 > 2. [寻找并删除Git记录中的大文件](https://harttle.land/2016/03/22/purge-large-files-in-gitrepo.html) 
+> 3. [GitHub官网给出的例子](https://github.com/github/gitignore)
