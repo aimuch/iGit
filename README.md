@@ -724,7 +724,8 @@ ssh-add ~/.ssh/github_rsa
 解决方法:    
 *需要ssh-agent启动bash，或者说把bash挂到ssh-agent下面*    
 ```shell
-ssh-agent bash --login -i
+#ssh-agent bash --login -i
+eval `ssh-agent -s`
 ```
 
 ### 3、 将生成的`xxx_rsa.pub`公钥内容添加到GitHub的SSH keys页面上。    
