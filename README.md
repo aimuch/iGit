@@ -18,6 +18,7 @@
 - [寻找并删除Git记录中的大文件](#寻找并删除git记录中的大文件)
 - [配置公私钥](#配置公私钥)
 - [怎么快速淘到感兴趣的开源项目](#怎么快速淘到感兴趣的开源项目)
+- [参考资料](#参考资料)
 
 
 ---
@@ -850,3 +851,4 @@ git 最好 学习 资料 in:readme stars:>1000 language:c
 > 2. [寻找并删除Git记录中的大文件](https://harttle.land/2016/03/22/purge-large-files-in-gitrepo.html) 
 > 3. [GitHub官网给出的例子](https://github.com/github/gitignore) 
 > 4. [Git submodule 子模块的管理和使用](https://www.jianshu.com/p/9000cd49822c)
+> 5. [git reset soft,hard,mixed之区别深解](https://www.cnblogs.com/kidsitcn/p/4513297.html)
