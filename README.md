@@ -1,5 +1,6 @@
 # i Play Git
-*这是极客时间苏玲老师的《玩转Git三剑客》笔记*       
+*这是极客时间苏玲老师的《玩转Git三剑客》笔记*   
+- [安装git](#安装git)    
 - [配置git环境](#配置git环境)
 - [创建仓库](#创建仓库)
 - [`clone`时指定文件夹名字](#clone时指定文件夹名字)
@@ -19,6 +20,23 @@
 
 
 ---
+## 安装git
+git官方下载地址: https://git-scm.com/download
+按照操作系统下载相应软件，其中Ubuntu推荐用**PPA**安装最新版.   
+
+### Debian/Ubuntu
+For the latest stable version for your release of Debian/Ubuntu
+```sh
+sudo apt-get install git
+```
+For Ubuntu, this PPA provides the latest stable upstream Git version
+```sh
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt-get update
+sudo apt-get install
+```
+
+
 ## 配置git环境
 ### 添加配置
 ```bash
