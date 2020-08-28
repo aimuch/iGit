@@ -10,6 +10,8 @@
 - [通过`git log`查看版本演变历史](#通过git-log查看版本演变历史)
 - [探密`.git`目录](#探密`.git`目录)
 - [理解`git reset`](#理解git-reset)
+- [如何撤销 Git 操作？](#如何撤销git操作)
+- [git cherry-pick](#git-cherry-pick)
 - [怎么修改老旧`commit`的`message`](#怎么修改老旧commit的message)
 - [怎样把连续的多个`commit`整理成1个](#怎样把连续的多个commit整理成1个)
 - [添加忽略配置文件`.gitignore`](#添加忽略配置文件gitignore)
@@ -246,24 +248,24 @@ git commit --amend  对最近一次的commit信息进行修改
 
 下面这一段是另外一个牛人的解释：    
 总的来说，git reset命令是用来将当前branch重置到另外一个commit的，而这个动作可能会将index以及work tree同样影响。比如如果你的master branch（当前checked out）是下面这个样子:
-```
+```sh
 - C (HEAD, master)
 - B
 - A
 ```
 HEAD和master branch tip是在一起的，而你希望将master指向到B，而不是C，那么你执行`git reset B` 以便移动master branch到B那个commit：
-```
+```sh
 - B (HEAD, master) # - C is still here, but there's no branch pointing to it anymore
 - A
 ```
 注意：git reset和checkout是不一样的。如果你运行git checkout B,那么你讲得到：
-```
+```sh
 - C (master)
 - B (HEAD)
 - A
 ```
 这时HEAD和master branch就不在一个点上了，你进入detached HEAD STATE. HEAD,work tree,index都指向了B，但是master branch却依然指向C。如果在这个点上，你执行一个新的commit D，那么你讲得到下面（当然这可能并不是你想要的，你可能想要的是创一个branch做bug fix）:
-```
+```sh
 - A - B - A (master)
        \
         D (HEAD)
@@ -274,12 +276,12 @@ HEAD和master branch tip是在一起的，而你希望将master指向到B，而�
 如果你仔细研究`reset`命令本身就知道，它本身做的事情就是重置HEAD(当前分支的版本顶端）到另外一个commit。假设我们有一个分支（名称本身无所谓，所以我们就简单称为"super-duper-feature”分支吧），图形化表示如下：
 ![git reset](./images/git-reset1.png)   
 如果我们执行：   
-```git
+```sh
 git reset HEAD
 ```
 任何事情都不会发生，这是因为我们告诉GIT重置这个分支到`HEAD`，而这个正是它现在所在的位置。   
 
-```git
+```sh
 git reset HEAD~1
 ```
 当我们再执行上面的命令时（`HEAD~1`是`the commit right before HEAD`的别名，或者说：put differently "HEAD's parent"），我们的分支将会如下所示:   
@@ -287,21 +289,21 @@ git reset HEAD~1
 如果我们执行`git reset HEAD~2`,则意味着将`HEAD`从顶端的commit往下移动两个更早的commit。
 
 ### git reset --soft
-```git
+```sh
 git reset --soft commit-ID
 ```
 `--soft`参数告诉Git重置`HEAD`到另外一个commit，但也到此为止。如果你指定`--soft`参数，Git将停止在那里而什么也不会根本变化。这意味着`index`, `working copy`都不会做任何变化，所有的在original HEAD和你重置到的那个commit之间的所有变更集都放在`stage(index)`区域中。    
 ![git reset](./images/git-reset3.png)   
 
 ### git reset --hard
-```git
+```sh
 git reset --hard commit-ID
 ```
 `--hard`参数将会blow out everything.它将重置`HEAD`返回到另外一个commit(取决于~12的参数），重置`index`以便反映`HEAD`的变化，并且重置`working copy`也使得其完全匹配起来。这是一个比较危险的动作，具有破坏性，数据因此可能会丢失！如果真是发生了数据丢失又希望找回来，那么只有使用：git reflog命令了。makes everything match the commit you have reset to.你的所有本地修改将丢失。如果我们希望彻底丢掉本地修改但是又不希望更改branch所指向的commit，则执行`git reset --hard` = `git reset --hard HEAD`. i.e. don't change the branch but get rid of all local changes.另外一个场景是简单地移动branch从一个到另一个commit而保持index/work区域同步。这将确实令你丢失你的工作，因为它将修改你的work tree！    
 ![git reset](./images/git-reset4.png)   
 
 ### git reset
-```git
+```sh
 git reset commit-ID
 # or
 git reset --mixed commit-ID
@@ -309,12 +311,200 @@ git reset --mixed commit-ID
 `--mixed`是`reset`的默认参数，也就是当你不指定任何参数时的参数。它将重置`HEAD`到另外一个commit,并且重置`index`以便和`HEAD`相匹配，但是也到此为止。`working copy`不会被更改。所有该branch上从original HEAD（commit）到你重置到的那个commit之间的所有变更将作为local modifications保存在working area中，（被标示为local modification or untracked via git status)，但是并未staged的状态，你可以重新检视然后再做修改和commit.    
 ![git reset](./images/git-reset5.png)   
 
+### 撤销git reset --hard
+```sh
+# step 1 查看git reset --hard之前的删除的log
+git reflog
+
+# step 2 恢复
+git reset –hard commit-ID
+
+# or
+git cherry-pick commit-ID
+```
+
 ### 总结
 ![git reset](./images/git-reset.jpg)    
 - **--soft**: uncommit changes, changes are left staged (index).
 - **--mixed (default)**: uncommit + unstage changes, changes are left in working tree.
 - **--hard**: uncommit + unstage + delete changes, nothing left.
 
+## 如何撤销git操作
+### 撤销提交
+一种常见的场景是，提交代码以后，你突然意识到这个提交有问题，应该撤销掉，这时执行下面的命令就可以了。   
+```sh
+git revert HEAD
+```
+上面命令的原理是，在当前提交后面，新增一次提交，抵消掉上一次提交导致的所有变化。它不会改变过去的历史，所以是首选方式，没有任何丢失代码的风险。
+
+git revert 命令只能抵消上一个提交，如果想抵消多个提交，必须在命令行依次指定这些提交。比如，抵消前两个提交，要像下面这样写。
+```sh
+git revert [倒数第一个提交] [倒数第二个提交]
+```
+`git revert`命令还有两个参数。
+- **--no-edit**：执行时不打开默认编辑器，直接使用 Git 自动生成的提交信息。
+- **--no-commit**：只抵消暂存区和工作区的文件变化，不产生新的提交。
+
+### 丢弃提交
+如果希望以前的提交在历史中彻底消失，而不是被抵消掉，可以使用`git reset`命令，丢弃掉某个提交之后的所有提交。
+```sh
+git reset [last good SHA]
+```
+`git reset`的原理是，让最新提交的指针回到以前某个时点，该时点之后的提交都从历史中消失。
+
+默认情况下，`git reset`不改变工作区的文件（但会改变暂存区），--hard参数可以让工作区里面的文件也回到以前的状态。
+```sh
+git reset --hard [last good SHA]
+```
+执行`git reset`命令之后，如果想找回那些丢弃掉的提交，可以使用`git reflog`命令，具体做法参考这里。不过，这种做法有时效性，时间长了可能找不回来。
+
+### 替换上一次提交
+提交以后，发现提交信息写错了，这时可以使用`git commit`命令的`--amend`参数，可以修改上一次的提交信息。
+```sh
+git commit --amend -m "Fixes bug #42"
+```
+它的原理是产生一个新的提交对象，替换掉上一次提交产生的提交对象。
+
+这时如果暂存区有发生变化的文件，会一起提交到仓库。所以，`--amend`不仅可以修改提交信息，还可以整个把上一次提交替换掉。
+
+### 撤销工作区的文件修改
+如果工作区的某个文件被改乱了，但还没有提交，可以用`git checkout`命令找回本次修改之前的文件。
+```sh
+git checkout -- [filename]
+```
+它的原理是先找暂存区，如果该文件有暂存的版本，则恢复该版本，否则恢复上一次提交的版本。
+
+注意，工作区的文件变化一旦被撤销，就无法找回了。
+
+### 从暂存区撤销文件
+如果不小心把一个文件添加到暂存区，可以用下面的命令撤销。
+```sh
+git rm --cached [filename]
+```
+上面的命令不影响已经提交的内容。
+
+### 撤销当前分支的变化
+你在当前分支上做了几次提交，突然发现放错了分支，这几个提交本应该放到另一个分支。
+```sh
+# 新建一个 feature 分支，指向当前最新的提交
+# 注意，这时依然停留在当前分支
+git branch feature
+
+# 切换到这几次提交之前的状态
+git reset --hard [当前分支此前的最后一次提交]
+
+# 切换到 feature 分支
+git checkout feature
+```
+上面的操作等于是撤销当前分支的变化，将这些变化放到一个新建的分支。
+
+## git cherry-pick
+对于多分支的代码库，将代码从一个分支转移到另一个分支是常见需求。
+
+这时分两种情况。一种情况是，你需要另一个分支的所有代码变动，那么就采用合并（git merge）。另一种情况是，你只需要部分代码变动（某几个提交），这时可以采用 Cherry pick。
+
+![git cherry-pick](./images/git-cherry-pick.jpg)    
+
+### 基本用法
+`git cherry-pick`命令的作用，就是将指定的提交（commit）应用于其他分支。
+```sh
+git cherry-pick <commitHash>
+```
+上面命令就会将指定的提交commitHash，应用于当前分支。这会在当前分支产生一个新的提交，当然它们的哈希值会不一样。
+
+举例来说，代码仓库有master和feature两个分支。
+```sh
+a - b - c - d   Master
+        \
+        e - f - g Feature
+```
+现在将提交f应用到master分支。
+```sh
+# 切换到 master 分支
+$ git checkout master
+
+# Cherry pick 操作
+$ git cherry-pick f
+```
+上面的操作完成以后，代码库就变成了下面的样子。
+```sh
+a - b - c - d - f   Master
+        \
+        e - f - g Feature
+```
+从上面可以看到，master分支的末尾增加了一个提交f。
+
+`git cherry-pick`命令的参数，不一定是提交的哈希值，分支名也是可以的，表示转移该分支的最新提交。
+```sh
+git cherry-pick feature
+```
+上面代码表示将feature分支的最近一次提交，转移到当前分支。
+
+### 转移多个提交
+Cherry pick 支持一次转移多个提交。
+```sh
+git cherry-pick <HashA> <HashB>
+```
+上面的命令将 **A** 和 **B** 两个提交应用到当前分支。这会在当前分支生成两个对应的新提交。
+
+如果想要转移一系列的连续提交，可以使用下面的简便语法。
+```sh
+git cherry-pick A..B
+```
+上面的命令可以转移从 A 到 B 的所有提交。它们必须按照正确的顺序放置：提交 A 必须早于提交 B，否则命令将失败，但不会报错。
+
+注意，使用上面的命令，提交 A 将不会包含在 Cherry pick 中。如果要包含提交 A，可以使用下面的语法。
+```sh
+git cherry-pick A^..B
+```
+### 配置项
+`git cherry-pick`命令的常用配置项如下:   
+- **-e**，**--edit** : 打开外部编辑器，编辑提交信息。
+- **-n**，**--no-commit** : 只更新工作区和暂存区，不产生新的提交。
+- **-x** : 在提交信息的末尾追加一行(cherry picked from commit ...)，方便以后查到这个提交是如何产生的。
+- **-s**，**--signoff** : 在提交信息的末尾追加一行操作者的签名，表示是谁进行了这个操作。
+- **-m parent-number**，**--mainline parent-number** : 如果原始提交是一个合并节点，来自于两个分支的合并，那么 Cherry pick 默认将失败，因为它不知道应该采用哪个分支的代码变动。
+
+-m配置项告诉 Git，应该采用哪个分支的变动。它的参数parent-number是一个从1开始的整数，代表原始提交的父分支编号。
+```sh
+git cherry-pick -m 1 <commitHash>
+```
+上面命令表示，Cherry pick 采用提交commitHash来自编号1的父分支的变动。
+
+一般来说，1号父分支是接受变动的分支（the branch being merged into），2号父分支是作为变动来源的分支（the branch being merged from）。
+
+### 代码冲突
+
+如果操作过程中发生代码冲突，Cherry pick 会停下来，让用户决定如何继续操作。
+
+- **--continue** : 用户解决代码冲突后，第一步将修改的文件重新加入暂存区（git add .），第二步使用下面的命令，让 Cherry pick 过程继续执行。
+    ```sh
+    git cherry-pick --continue
+    ```
+- **--abort** : 发生代码冲突后，放弃合并，回到操作前的样子。
+- **--quit** : 发生代码冲突后，退出 Cherry pick，但是不回到操作前的样子。
+
+### 转移到另一个代码库
+`Cherry pick` 也支持转移另一个代码库的提交，方法是先将该库加为远程仓库。
+```sh
+git remote add target git://gitUrl
+```
+上面命令添加了一个远程仓库target。
+
+然后，将远程代码抓取到本地。
+```sh
+git fetch target
+```
+上面命令将远程代码仓库抓取到本地。
+
+接着，检查一下要从远程仓库转移的提交，获取它的哈希值。
+```sh
+git log target/master
+``
+最后，使用`git cherry-pick`命令转移提交。
+```sh
+git cherry-pick <commitHash>
+```
 
 ## 怎么修改老旧commit的message
 ```bash
@@ -860,3 +1050,5 @@ git 最好 学习 资料 in:readme stars:>1000 language:c
 > 4. [Git submodule 子模块的管理和使用](https://www.jianshu.com/p/9000cd49822c)
 > 5. [git reset soft,hard,mixed之区别深解](https://www.cnblogs.com/kidsitcn/p/4513297.html)
 > 6. [What's the difference between git reset --mixed, --soft, and --hard?](https://stackoverflow.com/questions/3528245/whats-the-difference-between-git-reset-mixed-soft-and-hard)
+> 7. [如何撤销 Git 操作？](http://www.ruanyifeng.com/blog/2019/12/git-undo.html)
+> 8. [git cherry-pick 教程](https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html)
