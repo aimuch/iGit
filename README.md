@@ -309,6 +309,13 @@ git reset --mixed commit-ID
 `--mixed`是`reset`的默认参数，也就是当你不指定任何参数时的参数。它将重置`HEAD`到另外一个commit,并且重置`index`以便和`HEAD`相匹配，但是也到此为止。`working copy`不会被更改。所有该branch上从original HEAD（commit）到你重置到的那个commit之间的所有变更将作为local modifications保存在working area中，（被标示为local modification or untracked via git status)，但是并未staged的状态，你可以重新检视然后再做修改和commit.    
 ![git reset](./images/git-reset5.png)   
 
+### 总结
+![git reset](./images/git-reset.jpg)    
+- **--soft**: uncommit changes, changes are left staged (index).
+- **--mixed (default)**: uncommit + unstage changes, changes are left in working tree.
+- **--hard**: uncommit + unstage + delete changes, nothing left.
+
+
 ## 怎么修改老旧commit的message
 ```bash
 git rebase -i [要更改的commit的上一级commit]
@@ -852,3 +859,4 @@ git 最好 学习 资料 in:readme stars:>1000 language:c
 > 3. [GitHub官网给出的例子](https://github.com/github/gitignore) 
 > 4. [Git submodule 子模块的管理和使用](https://www.jianshu.com/p/9000cd49822c)
 > 5. [git reset soft,hard,mixed之区别深解](https://www.cnblogs.com/kidsitcn/p/4513297.html)
+> 6. [What's the difference between git reset --mixed, --soft, and --hard?](https://stackoverflow.com/questions/3528245/whats-the-difference-between-git-reset-mixed-soft-and-hard)
