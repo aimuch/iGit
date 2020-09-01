@@ -10,6 +10,7 @@
 - [通过`git log`查看版本演变历史](#通过git-log查看版本演变历史)
 - [探密`.git`目录](#探密`.git`目录)
 - [理解`git reset`](#理解git-reset)
+- [git stash](#git-stash)
 - [如何撤销 Git 操作？](#如何撤销git操作)
 - [git cherry-pick](#git-cherry-pick)
 - [怎么修改老旧`commit`的`message`](#怎么修改老旧commit的message)
@@ -328,6 +329,29 @@ git cherry-pick commit-ID
 - **--soft**: uncommit changes, changes are left staged (index).
 - **--mixed (default)**: uncommit + unstage changes, changes are left in working tree.
 - **--hard**: uncommit + unstage + delete changes, nothing left.
+
+
+## git stash
+- **`git stash`**    
+    保存当前工作进度，会把暂存区和工作区的改动保存起来。执行完这个命令后，在运行`git status`命令，就会发现当前是一个干净的工作区，没有任何改动。使用`git stash save 'message...'`可以添加一些注释
+
+- **`git stash list`**    
+    显示保存进度的列表。也就意味着，git stash命令可以多次执行。
+
+- **`git stash pop [–index] [stash_id]`**    
+    `git stash pop` 恢复最新的进度到工作区。git默认会把工作区和暂存区的改动都恢复到工作区。
+   ` git stash pop --index` 恢复最新的进度到工作区和暂存区。（尝试将原来暂存区的改动还恢复到暂存区）
+    `git stash pop stash@{1}`恢复指定的进度到工作区。stash_id是通过git stash list命令得到的
+    通过`git stash pop`命令恢复进度后，会删除当前进度。
+
+- **`git stash apply [–index] [stash_id]`**     
+    除了不删除恢复的进度之外，其余和`git stash pop`命令一样。
+
+- **`git stash drop [stash_id]`**    
+    删除一个存储的进度。如果不指定stash_id，则默认删除最新的存储进度。
+
+- **`git stash clear`**    
+    删除所有存储的进度。
 
 ## 如何撤销git操作
 ### 撤销提交
