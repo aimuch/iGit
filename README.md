@@ -68,12 +68,12 @@ git add -u :将工作空间被修改和被删除的文件添加到暂存区(不�
 ```    
 
 ## git为不同的项目设置不同的用户名
-```
+```sh
 cd Your_Project
 vim .git/config
 ```
 添加以下内容:    
-```
+```vim
 [user]
     name = XXX(自己的名称英文)
     email = XXXX(邮箱)
