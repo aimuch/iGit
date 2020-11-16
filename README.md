@@ -75,8 +75,8 @@ vim .git/config
 添加以下内容:    
 ```vim
 [user]
-    name = Your Name
-    email = Your_email_address
+    name = Your_Name
+    email = Your_Email_Address
 ```
 
 ## 创建仓库
