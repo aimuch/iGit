@@ -22,6 +22,7 @@
 - [寻找并删除Git记录中的大文件](#寻找并删除git记录中的大文件)
 - [配置公私钥](#配置公私钥)
 - [怎么快速淘到感兴趣的开源项目](#怎么快速淘到感兴趣的开源项目)
+- [统计仓库代码](#统计仓库代码)
 - [参考资料](#参考资料)
 
 
@@ -1078,6 +1079,13 @@ ssh -T git@github.com
 git 最好 学习 资料 in:readme stars:>1000 language:c
 ```
 上述命令的意思是搜索reademe中包含`git、最好、学习、资料`”且`star大于1000`的，用`C语言编写`的仓库。    
+
+## 统计仓库代码
+到所需要统计的仓库目录中，执行以下命令:    
+```shell
+git log --author='USER_NAME' --since='2020-7-1' --until='2020-12-31' --pretty=tformat: --numstat | grep '.' | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
+```
+
 
 ---
 ## 参考资料
