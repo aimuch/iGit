@@ -1058,6 +1058,7 @@ ssh-add ~/.ssh/github_rsa
 *需要ssh-agent启动bash，或者说把bash挂到ssh-agent下面*    
 ```shell
 #ssh-agent bash --login -i
+#ssh-agent zsh --login -i
 eval `ssh-agent -s`
 ```
 
