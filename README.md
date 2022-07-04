@@ -75,6 +75,7 @@
 - [如何指定不需要Git管理的文件？](#如何指定不需要git管理的文件)
 - [添加远程仓库](#添加远程仓库)
 - [git迁移新仓库并保存历史提交记录](#git迁移新仓库并保存历史提交记录)
+- [git仓库从http链接转为ssh](#git仓库从http链接转为ssh)
 - [配置公私钥](#配置公私钥)
   - [1、 检查是否已存在相应的`ssh key`:](#1-检查是否已存在相应的ssh-key)
   - [2、 生成新的`ssh key`,并添加至`ssh-agent`:](#2-生成新的ssh-key并添加至ssh-agent)
@@ -1107,6 +1108,18 @@ git remote add [shortname] [url]
     ```shell
     git push --mirro https://gitee.com/newxxx/newxxx.git
     ```
+
+## git仓库从http链接转为ssh
+在`git clone`项目后，只需将`.git/config`文件中
+```vim
+url = http://xxx.com/Name/project.git
+```
+改为:   
+```vim
+url = git@xxx.com/Name/project.git
+```
+即可。
+
 
 ## 配置公私钥
 ### 1、 检查是否已存在相应的`ssh key`:    
